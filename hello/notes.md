@@ -2,15 +2,41 @@
 
 ### Syntax
 
+### vars
 - variable declaration is done using `:=` (colon, equal)
+
+#### functions
+
 - function signature:
   1. `func` keyword
   2. function name (Pascal case seems to be the convention)
   3. paranthesis with arguments & argument type (separated by a space)
+
+- named returns
+  -  can be implicitly returned (just `return`)
+  - automatically created with the `zero` value initially
+  -> zero value: int = 0, string = ""
+  - documented more nicely by godoc
+
+#### consts
+
+- `const` available for constants
+- multiple const declarations can be grouped in a block
+```go
+const(
+  a = 'a'
+  b ='b'
+)
+```
+
+#### misc
+
+- switch block
+  -  seems not to be indented
+
 - tests are run using `go test` inside a module
 - inside string format `%s` inserts the string while `%q` inserts the string inside quotations
 - string concatenation can be done with `+`
-- `const` available for constants
 
 ### Testing
 
