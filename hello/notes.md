@@ -33,3 +33,11 @@
 ## Questions
 
 - what is the asterisk in front of the argument in `(t *testing.T)`
+
+## TDD
+
+- write test
+- make compiler pass
+- run test & check if error message is meaningful
+- write code & make test pass
+- refactor
