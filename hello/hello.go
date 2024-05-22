@@ -1,21 +1,15 @@
-package main
+package hello
 
-import "fmt"
+const (
+	spanish  = "Spanish"
+	japanese = "Japanese"
 
-func main () {
-	fmt.Println(Hello("world", ""))
-}
-
-const(
-  spanish = "Spanish"
-  japanese = "Japanese"
-
-  englishHelloPrefix = "Hello, "
-  spanishHelloPrefix = "Hola, "
-  japaneseHelloPrefix = "こんにちは"
+	englishHelloPrefix  = "Hello, "
+	spanishHelloPrefix  = "Hola, "
+	japaneseHelloPrefix = "こんにちは"
 )
 
-func Hello (name string, language string) string {
+func Hello(name string, language string) string {
 	if name == "" {
 		name = "World"
 	}
