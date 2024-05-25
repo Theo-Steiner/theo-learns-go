@@ -13,6 +13,7 @@
 #### Structs
 
 - a named collection of fields
+- can be printed with `fmt.Printf("%#v", myStruct)`
 
 ```go
 type Rectangle struct {
@@ -53,8 +54,31 @@ type Shape interface {
 ```
 
 Interfaces should declare only what is needed, in order to *decouple* implementation details.
+Interfaces allow you to defined functions that can be used by different types (parametric polymorphism)
 
 
 ### Testing
 
 #### Table driven tests
+
+```go
+func TestArea(t *testing.T) {
+	areaTests := []struct {
+		shape Shape
+		want  float64
+	}{
+		{Rectangle{12.0, 6.0}, 72.0},
+		{Circle{10.0}, 314.1592653589793},
+	}
+
+	for _, tt := range areaTests {
+		got := tt.shape.Area()
+
+		if got != tt.want {
+			t.Errorf("%#v, got %.2f want %.2f", tt.shape, got, tt.want)
+		}
+	}
+}
+```
+- areaTests slice is declared with an "anonymous struct""
+- tt is short for table test
