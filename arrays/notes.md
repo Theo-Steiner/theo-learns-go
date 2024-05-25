@@ -41,6 +41,15 @@ for index, el := range arr {
   - appending requires assignment (because **sometimes** a new slice is created)
 - create a slice based on a runtime known capacity:
   - `slice = make([]int, capacity)`
+- slices can be 'sliced' into partial slices:
+  - syntax: like index access, but with a colon, that denotes the lower and upper index bounds of the slice `slice[lower:upper]`
+
+```go
+    mySlice := []int{1,2,3} // {1,2,3}
+    subSlice := mySlice[1:] // {2,3}
+    subSlice = mySlice[:2]  // {1,2}
+    subSlice = mySlice[1:2] // {2}
+```
 
 > "The make built-in function allocates and initializes an object of type slice, map, or chan (only)."
 
