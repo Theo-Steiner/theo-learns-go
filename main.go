@@ -1,12 +1,10 @@
 package main
 
-import "fmt"
 import (
-	hello "learngowithtests/hello"
-	integers "learngowithtests/integers"
+	di "learngowithtests/di"
+	"os"
 )
 
 func main() {
-	fmt.Println(hello.Hello("world", ""))
-	fmt.Printf("Adding 3 & 5 is: %d, yay! \n", integers.Add(3, 5))
+	di.Greet(os.Stdout, "Elodie")
 }
