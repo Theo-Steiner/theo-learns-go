@@ -25,6 +25,7 @@ for _, url := range urls {
 #### Channels
 
 - channels allow you to coordinate the communication between multiple processes
+- always initiate channels with `make(chan type)` because sending to a `nil` channel would make go panic
 - channels are created like so: `myChannel := make(chan string)` -> a channel that takes in strings
   - to send to a channel `myChannel <- "hello"` (this sends a single `"hello"` to the channel, almost like pushing to an array)
   - to receive from a channel `result <- myChannel` ("result" receives a single result from a channel, almost like popping from an array)
@@ -47,3 +48,8 @@ for _, _ := range urls {
   dataByUrl[result.url] = result.data
 }
 ```
+
+## Meta
+
+this exercise left me a bit confused tbh,
+wouldn't it be better to have a possibility over the channel's entries manually
