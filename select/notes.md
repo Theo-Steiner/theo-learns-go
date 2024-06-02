@@ -9,7 +9,24 @@
   - `defer` is written close to the initial invocation, but executed at the end
   - being close is better because that gives it context
 
-## mock library for testing http stuff
+### select
+
+- syntax to wait on multiple channels and "select" the first channel that receives a message
+
+```go
+// select takes whichever value comes first
+select {
+// ping() is implemented so that it returns a channel,
+// to which it will send a message as soon as it get's a response
+case <-ping(url):
+    return a, nil
+// time.After returns a channel that will receive a message after the timeout
+case <-time.After(timeout):
+    return "", fmt.Errorf("timed out waiting for %s and %s", a, b)
+}
+```
+
+## standard mock library for testing http stuff
 
 - go provides a std library one can mock http servers/ requests with: `httptest`
 
