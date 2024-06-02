@@ -5,19 +5,19 @@ import (
 	"time"
 )
 
+func measureResponseTime(url string) time.Duration {
+	start := time.Now()
+	http.Get(url)
+	return time.Since(start)
+}
+
 // Race two websites, and return the URL of the website that responded first (timeout after 10s)
 func WebsiteRacer(a, b string) (winner string, err error) {
-	startA := time.Now()
-	http.Get(a)
-	aDuration := time.Since(startA)
+	aDuration := measureResponseTime(a)
+	bDuration := measureResponseTime(b)
 
-	startB := time.Now()
-	http.Get(b)
-	bDuration := time.Since(startB)
-
-	winner = a
-	if bDuration < aDuration {
-		winner = b
+	if aDuration < bDuration {
+		return a, err
 	}
-	return winner, err
+	return b, err
 }
