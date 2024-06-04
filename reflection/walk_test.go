@@ -71,13 +71,6 @@ func TestWalk(t *testing.T) {
 			},
 			[]string{"Engineer", "Merchandise Coordinator"},
 		},
-		{"maps",
-			map[string]string{
-				"cow":   "moo",
-				"sheep": "baa",
-			},
-			[]string{"moo", "baa"},
-		},
 	}
 
 	for _, test := range cases {
@@ -95,5 +88,32 @@ func TestWalk(t *testing.T) {
 				t.Errorf("wrong number of function calls, got %v want %v", got, test.ExpectedCalls)
 			}
 		})
+
+		t.Run("maps", func(t *testing.T) {
+			// map might fail, because go does not guarantee order for maps
+			myMap := map[string]string{
+				"cow":   "moo",
+				"sheep": "baa",
+			}
+			var got []string
+			walk(myMap, func(input string) {
+				got = append(got, input)
+			})
+			assertContains(t, got, "moo")
+			assertContains(t, got, "baa")
+		})
+	}
+}
+
+func assertContains(t *testing.T, haystack []string, needle string) {
+	t.Helper()
+	didFindNeedle := false
+	for _, element := range haystack {
+		if element == needle {
+			didFindNeedle = true
+		}
+	}
+	if !didFindNeedle {
+		t.Errorf("expected %v to contain %q but it didn't", haystack, needle)
 	}
 }
