@@ -73,20 +73,9 @@ func TestWalk(t *testing.T) {
 		},
 	}
 
-	for _, test := range cases {
-		t.Run(test.Name, func(t *testing.T) {
-			var got []string
-			err := walk(test.Input, func(input string) {
-				got = append(got, input)
-			})
-
-			if err != nil {
-				t.Fatalf("Did not expect error, but received %q", err)
-			}
-
-			if !slices.Equal(got, test.ExpectedCalls) {
-				t.Errorf("wrong number of function calls, got %v want %v", got, test.ExpectedCalls)
-			}
+	for _, testCase := range cases {
+		t.Run(testCase.Name, func(t *testing.T) {
+			assertCorrectWalkResult(t, testCase.Input, testCase.ExpectedCalls)
 		})
 
 		t.Run("maps", func(t *testing.T) {
@@ -110,39 +99,31 @@ func TestWalk(t *testing.T) {
 				aChannel <- Profile{"Katowice", 34}
 				close(aChannel)
 			}()
-			var got []string
-			want := []string{"Berlin", "Katowice"}
-			err := walk(aChannel, func(input string) {
-				got = append(got, input)
-			})
-
-			if err != nil {
-				t.Fatalf("Did not expect error, but received %q", err)
-			}
-
-			if !slices.Equal(got, want) {
-				t.Errorf("wrong number of function calls, got %v want %v", got, test.ExpectedCalls)
-			}
+			assertCorrectWalkResult(t, aChannel, []string{"Berlin", "Katowice"})
 		})
 
 		t.Run("func", func(t *testing.T) {
 			aFunction := func() (a, b Profile) {
 				return Profile{"Berlin", 34}, Profile{"Katowice", 34}
 			}
-			var got []string
-			want := []string{"Berlin", "Katowice"}
-			err := walk(aFunction, func(input string) {
-				got = append(got, input)
-			})
-
-			if err != nil {
-				t.Fatalf("Did not expect error, but received %q", err)
-			}
-
-			if !slices.Equal(got, want) {
-				t.Errorf("wrong number of function calls, got %v want %v", got, test.ExpectedCalls)
-			}
+			assertCorrectWalkResult(t, aFunction, []string{"Berlin", "Katowice"})
 		})
+	}
+}
+
+func assertCorrectWalkResult(t *testing.T, input interface{}, want []string) {
+	t.Helper()
+	var got []string
+	err := walk(input, func(input string) {
+		got = append(got, input)
+	})
+
+	if err != nil {
+		t.Fatalf("Did not expect error, but received %q", err)
+	}
+
+	if !slices.Equal(got, want) {
+		t.Errorf("wrong number of function calls, got %v want %v", got, want)
 	}
 }
 
