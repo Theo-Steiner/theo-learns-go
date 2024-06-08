@@ -102,6 +102,47 @@ func TestWalk(t *testing.T) {
 			assertContains(t, got, "moo")
 			assertContains(t, got, "baa")
 		})
+
+		t.Run("channels", func(t *testing.T) {
+			aChannel := make(chan Profile)
+			go func() {
+				aChannel <- Profile{"Berlin", 33}
+				aChannel <- Profile{"Katowice", 34}
+				close(aChannel)
+			}()
+			var got []string
+			want := []string{"Berlin", "Katowice"}
+			err := walk(aChannel, func(input string) {
+				got = append(got, input)
+			})
+
+			if err != nil {
+				t.Fatalf("Did not expect error, but received %q", err)
+			}
+
+			if !slices.Equal(got, want) {
+				t.Errorf("wrong number of function calls, got %v want %v", got, test.ExpectedCalls)
+			}
+		})
+
+		t.Run("func", func(t *testing.T) {
+			aFunction := func() (a, b Profile) {
+				return Profile{"Berlin", 34}, Profile{"Katowice", 34}
+			}
+			var got []string
+			want := []string{"Berlin", "Katowice"}
+			err := walk(aFunction, func(input string) {
+				got = append(got, input)
+			})
+
+			if err != nil {
+				t.Fatalf("Did not expect error, but received %q", err)
+			}
+
+			if !slices.Equal(got, want) {
+				t.Errorf("wrong number of function calls, got %v want %v", got, test.ExpectedCalls)
+			}
+		})
 	}
 }
 

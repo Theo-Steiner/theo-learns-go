@@ -22,6 +22,15 @@ func walk(x interface{}, fn func(input string)) error {
 		for i := 0; i < val.Len(); i++ {
 			walkValue(val.Index(i))
 		}
+	case reflect.Chan:
+		for received, ok := val.Recv(); ok; received, ok = val.Recv() {
+			walkValue(received)
+		}
+	case reflect.Func:
+		valFnResult := val.Call(nil)
+		for _, res := range valFnResult {
+			walkValue(res)
+		}
 	case reflect.Map:
 		for _, key := range val.MapKeys() {
 			walkValue(val.MapIndex(key))
